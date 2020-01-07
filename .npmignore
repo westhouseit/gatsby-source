@@ -1,2 +1,5 @@
-src
-tsconfig.json
+/*
+!LICENSE
+!README.md
+!package.json
+!dist/*
