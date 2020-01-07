@@ -4,7 +4,10 @@ import { log } from './utils';
 import { DirectusServiceConfig, DirectusService } from './directus-service';
 import { GatsbyProcessor, GatsbyProcessorConfig } from './gatsby-processor';
 
-export const sourceNodes = async (gatsby: any, config: DirectusServiceConfig & GatsbyProcessorConfig) => {
+export const sourceNodes = async (
+  gatsby: any,
+  config: DirectusServiceConfig & GatsbyProcessorConfig,
+): Promise<void> => {
   log.info(`Starting...`);
   log.info(`Target: ${config.url}/${config.project}`);
 

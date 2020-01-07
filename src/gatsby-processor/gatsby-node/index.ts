@@ -68,7 +68,7 @@ export class GatsbyFileNode extends GatsbyNode {
         cache: this._processor.gatsby.cache,
         createNode: this._processor.gatsby.actions.createNode,
         createNodeId: this._processor.gatsby.createNodeId,
-        reporter: undefined,
+        reporter: this._processor.gatsby.reporter,
         url: localNode.data.full_url,
       });
 

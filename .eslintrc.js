@@ -9,4 +9,8 @@ module.exports = {
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
   ],
+  rules: {
+    "@typescript-eslint/camelcase": "warn",
+    "@typescript-eslint/explicit-function-return-type": "error"
+  }
 };

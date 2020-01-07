@@ -1,18 +1,18 @@
-import { ICollection } from '@directus/sdk-js/dist/types/schemes/directus/Collection';
 import { IField } from '@directus/sdk-js/dist/types/schemes/directus/Field';
+import { ICollectionDataSet } from '@directus/sdk-js/dist/types/schemes/response/Collection';
 import { ContentNode } from '../content-node';
 
 export interface ContentCollectionConfig {
-  collection: ICollection;
+  collection: ICollectionDataSet;
   records: any[];
 }
 
 export class ContentCollection {
-  private _collection: ICollection;
+  private _collection: ICollectionDataSet;
   private _nodes: { [recordId: string]: ContentNode } = {};
   private _primaryKeyFieldName: string;
 
-  private _isJunction: boolean = false;
+  private _isJunction = false;
 
   constructor(config: ContentCollectionConfig) {
     this._collection = config.collection;
@@ -34,8 +34,8 @@ export class ContentCollection {
     }, {});
   }
 
-  private _resolvePrimaryKeyFieldName(collection: ICollection): string {
-    const [pkField] = Object.values((collection as any).fields).filter(({ primary_key }) => primary_key);
+  private _resolvePrimaryKeyFieldName(collection: ICollectionDataSet): string {
+    const [pkField] = Object.values(collection.fields).filter(({ primary_key }) => primary_key);
 
     if (!pkField) {
       throw new Error(`Unable to resolve PK field for collection ${collection.collection}`);
@@ -44,7 +44,7 @@ export class ContentCollection {
     return (pkField as IField).field;
   }
 
-  public flagJunction(isJunction: boolean = true) {
+  public flagJunction(isJunction = true): void {
     this._isJunction = isJunction;
   }
 

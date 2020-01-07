@@ -1,17 +1,15 @@
-import { ICollection } from '@directus/sdk-js/dist/types/schemes/directus/Collection';
 import { IRelation } from '@directus/sdk-js/dist/types/schemes/directus/Relation';
+import { ICollectionDataSet } from '@directus/sdk-js/dist/types/schemes/response/Collection';
+import { log } from '../utils';
 import { ContentCollection } from './content-collection';
 import {
   ContentRelation,
-  SimpleContentRelation,
-  JunctionContentRelation,
   FileContentRelation,
-  ContentRelationConfig,
+  JunctionContentRelation,
+  SimpleContentRelation,
 } from './content-relation';
-import { log } from '../utils';
-
 export interface ContentMeshConfig {
-  collections: ICollection[];
+  collections: ICollectionDataSet[];
   records: { [collectionId: string]: any[] };
   relations: IRelation[];
 }
@@ -91,7 +89,7 @@ export class ContentMesh {
       );
 
       return bag;
-    }, []);
+    }, [] as ContentRelation[]);
   }
 
   /**
@@ -160,7 +158,7 @@ export class ContentMesh {
       );
 
       return bag;
-    }, []);
+    }, [] as ContentRelation[]);
   }
 
   private _buildFileRelations(): ContentRelation[] {
@@ -188,7 +186,7 @@ export class ContentMesh {
         });
 
       return bag;
-    }, []);
+    }, [] as ContentRelation[]);
   }
 
   private _shouldProcessRelation(
@@ -221,7 +219,7 @@ export class ContentMesh {
       });
 
       return bag;
-    }, {});
+    }, {} as { [collectionId: string]: ContentCollection });
   }
 
   public getCollection(id: string): ContentCollection | void {

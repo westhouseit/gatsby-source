@@ -9,9 +9,9 @@ export interface GatsbyProcessorConfig {
 }
 
 export class GatsbyProcessor {
-  private _typePrefix: string = 'Directus';
-  private _includeJunctions: boolean = false;
-  private _downloadFiles: boolean = true;
+  private _typePrefix = 'Directus';
+  private _includeJunctions = false;
+  private _downloadFiles = true;
 
   public gatsby: any;
   public createNodeFactory: any;

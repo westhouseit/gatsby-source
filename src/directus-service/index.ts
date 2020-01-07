@@ -1,9 +1,12 @@
 import DirectusSDK from '@directus/sdk-js';
-import { IFile } from '@directus/sdk-js/dist/types/schemes/directus/File';
-import { log } from '../utils';
-import { ICollection } from '@directus/sdk-js/dist/types/schemes/directus/Collection';
-import { ICollectionResponse } from '@directus/sdk-js/dist/types/schemes/response/Collection';
 import { IConfigurationOptions } from '@directus/sdk-js/dist/types/Configuration';
+import { IFile } from '@directus/sdk-js/dist/types/schemes/directus/File';
+import {
+  ICollectionDataSet,
+  ICollectionResponse,
+  ICollectionsResponse,
+} from '@directus/sdk-js/dist/types/schemes/response/Collection';
+import { log } from '../utils';
 
 export interface DirectusServiceConfig {
   url: string;
@@ -25,11 +28,11 @@ export interface DirectusServiceConfig {
 }
 
 export class DirectusService {
-  private static _voidStatusKey: string = '__NONE__';
+  private static _voidStatusKey = '__NONE__';
 
-  private _fileCollectionName: string = 'directus_files';
+  private _fileCollectionName = 'directus_files';
   private _targetStatuses: string[] | void = ['published', DirectusService._voidStatusKey];
-  private _includeInternalCollections: boolean = false;
+  private _includeInternalCollections = false;
   private _customRecordFilter?: (record: any, collection: string) => boolean;
 
   private _allowCollections: string[] | void;
@@ -43,7 +46,7 @@ export class DirectusService {
       this._fileCollectionName = config.fileCollectionName;
     }
 
-    if (config.hasOwnProperty('targetStatuses')) {
+    if (Object.prototype.hasOwnProperty.call(config, 'targetStatuses')) {
       this._targetStatuses = config.targetStatuses;
     }
 
@@ -102,7 +105,7 @@ export class DirectusService {
     }
   }
 
-  private _shouldIncludeCollection(collection: string, managed: boolean): boolean {
+  private _shouldIncludeCollection(collection: string, managed = false): boolean {
     if (this._allowCollections && !this._allowCollections.includes(collection)) {
       return false;
     } else if (this._blockCollections && this._blockCollections.includes(collection)) {
@@ -144,15 +147,19 @@ export class DirectusService {
     }
   }
 
-  public async getFilesCollection(): Promise<ICollection> {
+  public async getFilesCollection(): Promise<ICollectionDataSet> {
     try {
       log.info(`Fetching files collection using name "${this._fileCollectionName}"`);
 
       // For some reason, api.getCollection(this._fileCollectionName) is not working
       // at time of authorship.
-      const { data: collections } = (await this._api.getCollections()) as any;
 
-      const [fileCollection] = collections.filter(({ collection }) => collection === this._fileCollectionName);
+      // Explicit 'any' cast because ICollectionsResponse doesn't match the actual response shape (DirectusSDK bug)
+      const { data: collections = [] } = (await this._api.getCollections()) as any;
+
+      const [fileCollection] = (collections as ICollectionDataSet[]).filter(
+        ({ collection }) => collection === this._fileCollectionName,
+      );
 
       if (!fileCollection) {
         throw new Error('No collection matching the given name found');
@@ -165,14 +172,17 @@ export class DirectusService {
     }
   }
 
-  public async batchGetCollections(): Promise<ICollection[]> {
+  public async batchGetCollections(): Promise<ICollectionDataSet[]> {
     try {
       log.info('Fetching all collections...');
 
-      // Currently we don't consider non-managed Directus tables.
+      // Explicit 'any' cast because ICollectionsResponse doesn't match the actual response shape (DirectusSDK bug)
       const { data: collections = [] } = (await this._api.getCollections()) as any;
 
-      return collections.filter(({ collection, managed }) => this._shouldIncludeCollection(collection, managed));
+      // Currently we don't consider non-managed Directus tables.
+      return (collections as ICollectionDataSet[]).filter(({ collection, managed }) =>
+        this._shouldIncludeCollection(collection, managed),
+      );
     } catch (e) {
       log.error('Failed to fetch collections');
       throw e;
@@ -196,9 +206,9 @@ export class DirectusService {
     try {
       log.info(`Fetching records for ${collection}...`);
 
-      const { data: items = [] } = await this._api.getItems(collection, {
+      const { data: items = [] } = (await this._api.getItems(collection, {
         fields: '*.*',
-      });
+      })) as { data: any[] };
 
       return items.filter(record => this._shouldIncludeRecord(record, collection));
     } catch (e) {
@@ -208,7 +218,7 @@ export class DirectusService {
     }
   }
 
-  public batchGetCollectionRecords(collections: ICollection[]): Promise<{ [collection: string]: any[] }> {
+  public batchGetCollectionRecords(collections: ICollectionDataSet[]): Promise<{ [collection: string]: any[] }> {
     log.info('Fetching all records...');
 
     return Promise.all(collections.map(({ collection }) => this.getCollectionRecords(collection))).then(

@@ -27,7 +27,7 @@ export class ContentNode {
     return this._record;
   }
 
-  public addRelation(relation: NodeRelation) {
+  public addRelation(relation: NodeRelation): void {
     this._relations[relation.field] = relation;
   }
 

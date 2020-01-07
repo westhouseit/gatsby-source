@@ -37,7 +37,7 @@ export abstract class ContentRelation {
     tableType: 'src' | 'dest',
   ): void | ContentNode | ContentNode[];
 
-  protected _updateTable(table: ContentCollection, tableType: 'src' | 'dest') {
+  protected _updateTable(table: ContentCollection, tableType: 'src' | 'dest'): void {
     if (!table.acceptsRelations()) return;
 
     table.getNodes().forEach(node => {

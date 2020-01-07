@@ -24,12 +24,14 @@ export class JunctionContentRelation extends ContentRelation {
 
   protected _resolveNodeRelation(node: ContentNode, tableType: 'src' | 'dest'): void | ContentNode | ContentNode[] {
     const targetField = tableType === 'src' ? this._srcField : this._destField;
-    const existing = node.contents[targetField] || [];
+    const existing: any[] = node.contents[targetField] || [];
 
+    // Explicit cast here because we're filtering out any
+    // 'void' values.
     return existing
       .map(junctionRecord => this._resolveJunctionNodes(junctionRecord))
       .map(({ src, dest }) => (tableType === 'src' ? dest : src))
-      .filter(node => node);
+      .filter(node => !!node) as ContentNode[];
   }
 
   protected _resolveJunctionNodes(junctionRecord: any): { src: ContentNode | void; dest: ContentNode | void } {
