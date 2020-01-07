@@ -1,0 +1,54 @@
+{
+  "name": "gatsby-source-directus",
+  "version": "1.0.0",
+  "description": "A Gatsby source plugin to pull content from a Directus CMS backend.",
+  "main": "./dist/gatsby-node.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint . --ext .ts && prettier --check \"src/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.ts\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/directus/gatsby-source.git"
+  },
+  "keywords": [
+    "gatsby",
+    "gatsby-plugin",
+    "gatsby-source",
+    "gatsby-source-plugin",
+    "gatsby-source-directus",
+    "gatsby-directus",
+    "directus",
+    "directus-cms"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/directus/gatsby-source/issues"
+  },
+  "homepage": "https://github.com/directus/gatsby-source#readme",
+  "dependencies": {
+    "@directus/sdk-js": "^6.0.0",
+    "array-flat-polyfill": "^1.0.1",
+    "colors": "^1.4.0",
+    "gatsby-node-helpers": "^0.3.0",
+    "gatsby-source-filesystem": "^2.1.43",
+    "pluralize": "^8.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.15.0",
+    "@typescript-eslint/parser": "^2.15.0",
+    "typescript": "^3.7.4",
+    "eslint": "^6.8.0",
+    "prettier": "^1.19.1",
+    "husky": "^4.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
+  }
+}
