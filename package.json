@@ -39,12 +39,13 @@
     "pluralize": "^8.0.0"
   },
   "devDependencies": {
+    "@types/node": "^13.1.4",
     "@typescript-eslint/eslint-plugin": "^2.15.0",
     "@typescript-eslint/parser": "^2.15.0",
-    "typescript": "^3.7.4",
     "eslint": "^6.8.0",
+    "husky": "^4.0.0",
     "prettier": "^1.19.1",
-    "husky": "^4.0.0"
+    "typescript": "^3.7.4"
   },
   "husky": {
     "hooks": {
