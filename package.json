@@ -1,5 +1,5 @@
 {
-  "name": "gatsby-source-directus",
+  "name": "@directus/gatsby-source-directus",
   "version": "1.0.0",
   "description": "A Gatsby source plugin to pull content from a Directus CMS backend.",
   "main": "./dist/gatsby-node.js",
