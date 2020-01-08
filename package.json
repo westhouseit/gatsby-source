@@ -4,7 +4,7 @@
   "description": "A Gatsby source plugin to pull content from a Directus CMS backend.",
   "main": "./dist/gatsby-node.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Warning: no tests yet\"",
     "build": "tsc",
     "dev": "tsc --watch",
     "lint": "eslint . --ext .ts && prettier --check \"src/**/*.ts\"",
