@@ -11,7 +11,8 @@
     "build": "tsc",
     "dev": "tsc --watch",
     "lint": "eslint . --ext .ts && prettier --check \"src/**/*.ts\"",
-    "format": "prettier --write \"src/**/*.ts\""
+    "format": "prettier --write \"src/**/*.ts\"",
+    "release": "npm version -m \":rocket: Release v%s\""
   },
   "repository": {
     "type": "git",
