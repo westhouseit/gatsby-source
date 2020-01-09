@@ -2,9 +2,6 @@ name: Publish to NPM
 
 on:
   push:
-    branches:
-      - master
-      - v[0-9]+
     tags:
       - v[0-9]+.[0-9]+.[0-9]+
 
@@ -20,6 +17,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           version: ${{ matrix.node-version }}
+          registry-url: https://registry.npmjs.org/
+          scope: '@directus'
 
       - name: Install
         run: npm ci

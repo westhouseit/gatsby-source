@@ -2,6 +2,9 @@
   "name": "@directus/gatsby-source-directus",
   "version": "0.1.0",
   "description": "A Gatsby source plugin to pull content from a Directus CMS backend.",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "./dist/gatsby-node.js",
   "scripts": {
     "test": "echo \"Warning: no tests yet\"",
