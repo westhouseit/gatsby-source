@@ -12,7 +12,7 @@
     "dev": "tsc --watch",
     "lint": "eslint . --ext .ts && prettier --check \"src/**/*.ts\"",
     "format": "prettier --write \"src/**/*.ts\"",
-    "release": "npm version -m \":rocket: Release v%s\""
+    "release": "npm version -m \":rocket: Release %s\""
   },
   "repository": {
     "type": "git",
