@@ -32,6 +32,14 @@ jobs:
       - name: Test
         run: npm test
 
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.ref }}
+          release_name: Release v${{ github.ref }}
+
       - name: Publish
         run: npm publish
         env:
