@@ -15,7 +15,7 @@ Inspired by the [gatsby-source-directus7](https://github.com/Jonesus/gatsby-sour
 Installing the plugin is no different than installing other Gatsby source plugins.
 
 1. Create a gatsby project. For help, see the Gatsby quick start guide [here](https://www.gatsbyjs.org/docs/quick-start)
-2. Install the plugin using `npm install --save gatsby-source-directus-cms`
+2. Install the plugin using `npm install --save @directus/gatsby-source-directus`
 3. Edit your `gatsby-config.js`. See below for details.
 
 ## Configuration
@@ -51,7 +51,7 @@ module.exports = {
   plugins: [
     {
       // ...
-      resolve: 'gatsby-source-directus-cms',
+      resolve: '@directus/gatsby-source-directus',
       options: {
         url: 'https://directus.example.com',
         auth: {
@@ -76,7 +76,7 @@ module.exports = {
   plugins: [
     {
       // ...
-      resolve: 'gatsby-source-directus-cms',
+      resolve: '@directus/gatsby-source-directus',
       options: {
         url: 'https://directus.example.com',
         auth: {
