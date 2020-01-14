@@ -37,8 +37,12 @@ Find details regarding the `options` object schema below.
 | downloadFiles      | `boolean`                                                    | `true`                      | Indicates if files should be downloaded to disk. Enables images to be used with other transform plugins. Setting to false could be useful if the project has many files.                                                               |
 | customRecordFilter | `((record: any, collection: string) => boolean) \| void`     | `void`                      | A function executed for each record, returning whether the record should be included in the content mesh. **Note:** If provided, this will **override** any `targetStatuses` value.                                                    |
 
-### Example Configuration
+### Directus Config
 
+Setting up a separate user in Directus for usage with this plugin is recommended. Make sure you grant `read` privileges to the user on all tables, including system tables. See more in the [Directus docs](https://docs.directus.io/guides/permissions.html#collection-level).
+
+### Example Configurations
+Basic configuration including only published or statusless items.
 ```js
 // gatsby-config.js
 
@@ -50,13 +54,11 @@ module.exports = {
       resolve: 'gatsby-source-directus-cms',
       options: {
         url: 'https://directus.example.com',
-        project: '_',
         auth: {
           email: 'admin@example.com',
           password: 'example',
         },
-        targetStatuses: ['published', 'draft', '__NONE__'],
-        downloadFiles: false,
+        targetStatuses: ['published', '__NONE__'],
       },
       // ...
     }
@@ -65,11 +67,358 @@ module.exports = {
 }
 ```
 
+Custom configuration including published, draft, or statusless items. Blocks the ```super_secret_stuff``` collection, and will **not** download files for processing by ```gatsby-image```.
+```js
+// gatsby-config.js
+
+module.exports = {
+  // ...
+  plugins: [
+    {
+      // ...
+      resolve: 'gatsby-source-directus-cms',
+      options: {
+        url: 'https://directus.example.com',
+        auth: {
+          email: 'admin@example.com',
+          password: 'example',
+        },
+        targetStatuses: ['published', 'draft', '__NONE__'],
+        blockCollections: ['super_secret_stuff'],
+        downloadFiles: false
+      },
+      // ...
+    }
+  ]
+  // ...
+}
+```
+
+## Usage Examples
+
+### Sample ```gatsby-node.js```
+
+```js
+const path = require('path');
+
+module.exports.createPages = async ({ graphql, actions }) => {
+
+  const { createPage } = actions;
+
+  // Sample query for all blog posts.
+  const response = await graphql(`
+    query GatsbyBlogPostsQuery {
+      allDirectusBlogPost {
+        edges {
+          node {
+            directusId
+            title
+            author
+            body
+            preview
+            created
+            slug
+          }
+        }
+      }
+    }
+  `);
+
+  // Destructure response to get post data
+  const {
+    data: {
+      allDirectusBlogPost: {
+        edges: posts = []
+      }
+    }
+  } = response;
+
+  // Build a new page that could list the blog posts
+  createPage({
+    path: '/blog',
+    component: path.resolve('./src/templates/blog-post-list.js'),
+    context: posts
+  });
+
+  // Build a new page for each blog post
+  posts.forEach(({ node: post }) => {
+    createPage({
+      path: `/blog/${post.slug}`,
+      component: path.resolve('./src/templates/blog-post.js'),
+      context: post
+    })
+  });
+
+};
+```
+
+### Example Using Static Query
+
+```js
+// ./gatsby-node.js
+const path = require('path');
+
+module.exports.createPages = async ({ graphql, actions }) => {
+
+  const { createPage } = actions;
+
+  // Sample query for all blog posts.
+  const response = await graphql(`
+    query GatsbyNodeQuery {
+      allDirectusBlogPost {
+        edges {
+          node {
+            directusId
+          }
+        }
+      }
+    }
+  `);
+
+  // Destructure response to get post IDs
+  const {
+    data: {
+      allDirectusBlogPost: {
+        edges: posts = []
+      }
+    }
+  } = response;
+
+  // Build a new page for each blog post, passing the directusId
+  // via `context` for the static query
+  posts.forEach(({ node: post }) => {
+    createPage({
+      path: `/blog/${post.slug}`,
+      component: path.resolve('./src/templates/blog-post.js'),
+      context: post
+    })
+  });
+
+};
+```
+
+```js
+// ./src/templates/blog-post.js
+import { graphql } from 'gatsby';
+import React from 'react';
+
+// A static query, the results from which
+// will be passed to our component. Uses the 'directusId' property
+// passed via the `createPage` context config to retrieve the blog post.
+export const query = graphql`
+  query($directusId: Int!) {
+    directusBlogPost(directusId: {eq: $directusId}) {
+      directusId
+      title
+      author
+      body
+      preview
+      created
+      slug
+    }
+  }
+`;
+
+// The component we'll render for a given blog post
+const BlogPost = ({
+  data: { directusBlogPost: post }
+}) => {
+  return (
+    // ... Some markup consuming the 'post' data
+  );
+
+};
+
+export default BlogPost;
+```
+
+### Sample Using a Page Query
+
+```js
+// ./src/pages/blog.js
+import { graphql } from 'gatsby';
+import React from 'react';
+
+// The query used to provide the page data
+// for the '/blog' route.
+export const pageQuery = graphql`
+    query BlogQuery {
+      allDirectusBlogPost {
+        edges {
+          node {
+            directusId
+            title
+            author
+            body
+            preview
+            created
+            slug
+          }
+        }
+      }
+    }
+`;
+
+// The component that will render a list of blog posts
+const BlogPage = ({
+    data,
+    location
+}) => {
+
+  // Extracting post data from props.
+  const {
+      allDirectusBlogPost: posts = [],
+  } = data;
+
+  return (
+    // ... Some markup consuming the list of 'posts'
+  );
+
+};
+
+export default BlogPage;
+
+```
+
+## Query Examples
+
+### Basic query for a list of blog posts
+```
+query BlogQuery {
+  allDirectusBlogPost {
+    edges {
+      node {
+        directusId
+        title
+        author
+        body
+        preview
+        created
+        slug
+      }
+    }
+  }
+}
+```
+
+### Basic query for a single blog post (via directusId)
+```
+query BlogPostQuery($directusId: Int!) {
+  directusBlogPost(directusId: {eq: $directusId}) {
+    directusId
+    title
+    author
+    body
+    preview
+    created
+    slug
+  }
+}
+```
+
+### Filtered & sorted list of blog posts
+```
+query BlogPostQuery {
+  allDirectusBlogPost(
+    filter: {created: {gte: "2020-01-01 00:00:00"}},
+    sort: {order: DESC, fields: created}
+  ) {
+    edges {
+      node {
+        directusId
+        title
+        author
+        body
+        preview
+        created
+        slug
+      }
+    }
+  }
+}
+```
+
+### Join for a list of products & all projects associated with each product.
+Assumes a field ```related_projects``` exists as the join field on the ```product``` table in Directus.
+```
+query ProductQuery {
+  allDirectusProduct {
+    edges {
+      node {
+        directusId
+        name
+        created
+        related_projects {
+          directusId
+          name
+        }
+      }
+    }
+  }
+}
+```
+
+### Join for the product category details via product ID.
+Assumes a field ```owning_product_category``` exists as the join field on the ```product``` table in Directus.
+```
+query ProductQuery($directusId: Int!) {
+  directusProduct(directusId: {eq: $directusId}) {
+    directusId
+    name
+    created
+    owning_product_category {
+      directusId
+      name
+      description
+    }
+  }
+}
+```
+
+### Join for the images (stored as Directus files) associated with a product
+Assumes a field ```images``` exists as the join field on the ```product``` table in Directus.
+```
+query ProductQuery($directusId: Int!) {
+  directusProduct(directusId: {eq: $directusId}) {
+    directusId
+    name
+    created
+    images {
+      id
+      data {
+        full_url
+        thumbnails {
+          height
+          width
+          dimension
+          url
+        }
+      }
+      description
+      type
+      title
+    }
+  }
+}
+```
+
+### Sample thumbnail query using ```gatsby-image```
+Builds a set of thumbnails (150px x 150px) for all images. Assumes ```downloadFiles``` was ```true``` in the plugin's config. The ```originalName``` property should match the corresponding ```directusFile``` ```filename``` property.
+```
+query AllImageThumbnails {
+  allImageSharp {
+    edges {
+      node {
+        sizes(maxHeight: 150, maxWidth: 150) {
+          src
+          originalName
+        }
+      }
+    }
+  }
+}
+```
 ## Notes
-
-### Directus Config
-
-Setting up a separate user in Directus for usage with this plugin is recommended. Make sure you grant `read` privileges to the user on all tables, including system tables. See more in the [Directus docs](https://docs.directus.io/guides/permissions.html#collection-level).
 
 ### Known Limitations
 
