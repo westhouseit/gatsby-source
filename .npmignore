@@ -2,4 +2,9 @@
 !LICENSE
 !README.md
 !package.json
-!dist/*
+!gatsby-node.js
+!utils.js
+!content-mesh/*
+!directus-service/*
+!gatsby-processor/*
+

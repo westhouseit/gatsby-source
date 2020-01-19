@@ -1,7 +1,11 @@
 ## Custom .gitignore
 ################################################################################
 
-
+gatsby-node.js
+utils.js
+content-mesh/*
+directus-service/*
+gatsby-processor/*
 
 ## Github Node .gitignore
 ## See https://github.com/github/gitignore/blob/master/Node.gitignore
