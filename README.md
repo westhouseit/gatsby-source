@@ -429,3 +429,23 @@ E.g. if either no records exist for the collection, or they are all filtered by 
 ### Development
 
 The project is written in TypeScript. You can clone the repo and use the command `npm run dev` to start TypeScript in watch-mode. `npm run build` builds the project.
+
+### Release
+
+Before making a new release, be sure that the project passes linting and the tests, otherwise it won't be published to NPM.
+
+First, we will bump the package version number, commit the change and finally tag the commit with our new version. This is done with the help of the NPM version command (see `npm help version`).
+```sh
+npm run release [<newversion> | major | minor | patch]
+```
+
+Push the release commit and then the release tag to the Github repository:
+```sh
+git push && git push --tags
+```
+
+Github will take care of building the project, running all the tests, and finally publishing the package to the NPM registry.
+
+The next step is to edit the auto generated release draft on Github to create a new release attached to the tag that we previously pushed.
+
+The release draft may contain some useless changes, so remove any unnecessary logs from it. Once the release draft is ready, it can be published.
