@@ -237,7 +237,7 @@ export class DirectusService {
 
       const { data = [] } = await this._api.getFiles();
 
-      return data.flat();
+      return data.reduce((flattened, nodes) => [...flattened, ...nodes]);
     } catch (e) {
       log.error('Failed to fetch files.');
       log.error(`Did you grant READ permissions?`);

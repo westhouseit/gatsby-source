@@ -47,7 +47,9 @@ export class GatsbyProcessor {
         .map(collection => new GatsbyType(collection, this).buildNodes()),
     );
 
-    return Promise.all(nodes.flat().map(node => this.gatsby.actions.createNode(node)));
+    return Promise.all(
+      nodes.reduce((flattened, nodes) => [...flattened, ...nodes]).map(node => this.gatsby.actions.createNode(node)),
+    );
   }
 
   public get downloadFiles(): boolean {
