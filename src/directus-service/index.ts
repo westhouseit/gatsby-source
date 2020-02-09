@@ -4,7 +4,7 @@ import { IFile } from '@directus/sdk-js/dist/types/schemes/directus/File';
 import {
   ICollectionDataSet,
   ICollectionResponse,
-  ICollectionsResponse,
+  // ICollectionsResponse,
 } from '@directus/sdk-js/dist/types/schemes/response/Collection';
 import { log } from '../utils';
 
@@ -24,6 +24,7 @@ export interface DirectusServiceConfig {
   allowCollections?: string[] | void;
   blockCollections?: string[] | void;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   customRecordFilter?: (record: any, collection: string) => boolean;
 }
 
@@ -33,6 +34,7 @@ export class DirectusService {
   private _fileCollectionName = 'directus_files';
   private _targetStatuses: string[] | void = ['published', DirectusService._voidStatusKey];
   private _includeInternalCollections = false;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _customRecordFilter?: (record: any, collection: string) => boolean;
 
   private _allowCollections: string[] | void;
@@ -115,6 +117,7 @@ export class DirectusService {
     return this._includeInternalCollections || managed;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _shouldIncludeRecord(record: any, collection: string): boolean {
     const { status } = record;
 
@@ -155,6 +158,7 @@ export class DirectusService {
       // at time of authorship.
 
       // Explicit 'any' cast because ICollectionsResponse doesn't match the actual response shape (DirectusSDK bug)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { data: collections = [] } = (await this._api.getCollections()) as any;
 
       const [fileCollection] = (collections as ICollectionDataSet[]).filter(
@@ -177,6 +181,7 @@ export class DirectusService {
       log.info('Fetching all collections...');
 
       // Explicit 'any' cast because ICollectionsResponse doesn't match the actual response shape (DirectusSDK bug)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const { data: collections = [] } = (await this._api.getCollections()) as any;
 
       // Currently we don't consider non-managed Directus tables.
@@ -189,6 +194,7 @@ export class DirectusService {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async batchGetRelations(): Promise<any> {
     try {
       log.info('Fetching all relations...');
@@ -202,12 +208,14 @@ export class DirectusService {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async getCollectionRecords(collection: string): Promise<any[]> {
     try {
       log.info(`Fetching records for ${collection}...`);
 
       const { data: items = [] } = (await this._api.getItems(collection, {
         fields: '*.*',
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       })) as { data: any[] };
 
       return items.filter(record => this._shouldIncludeRecord(record, collection));
@@ -218,6 +226,7 @@ export class DirectusService {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public batchGetCollectionRecords(collections: ICollectionDataSet[]): Promise<{ [collection: string]: any[] }> {
     log.info('Fetching all records...');
 
@@ -226,6 +235,7 @@ export class DirectusService {
         return recordSets.reduce((recordMap, records, i) => {
           recordMap[collections[i].collection] = records || [];
           return recordMap;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
         }, {} as { [collection: string]: any[] });
       },
     );

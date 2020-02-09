@@ -2,12 +2,14 @@ import { ContentCollection } from '../content-collection';
 import { NodeRelation } from '../node-relation';
 
 export interface ContentNodeConfig {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   record: any;
   collection: ContentCollection;
   primaryKeyFieldName: string;
 }
 
 export class ContentNode {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _record: any;
   private _collection: ContentCollection;
   private _primaryKeyFieldName: string;
@@ -23,6 +25,7 @@ export class ContentNode {
     return this._record[this._primaryKeyFieldName];
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public get contents(): any {
     return this._record;
   }

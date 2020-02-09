@@ -4,6 +4,7 @@ import { DirectusServiceConfig, DirectusService } from './directus-service';
 import { GatsbyProcessor, GatsbyProcessorConfig } from './gatsby-processor';
 
 export const sourceNodes = async (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   gatsby: any,
   config: DirectusServiceConfig & GatsbyProcessorConfig,
 ): Promise<void> => {

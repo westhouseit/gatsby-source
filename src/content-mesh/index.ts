@@ -10,6 +10,7 @@ import {
 } from './content-relation';
 export interface ContentMeshConfig {
   collections: ICollectionDataSet[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   records: { [collectionId: string]: any[] };
   relations: IRelation[];
 }
@@ -50,6 +51,7 @@ export class ContentMesh {
    */
   private _buildO2MRelations(relations: IRelation[] = []): ContentRelation[] {
     return relations.reduce((bag, relation) => {
+      // eslint-disable-next-line @typescript-eslint/camelcase
       const { collection_many, collection_one, field_many, field_one } = relation;
 
       if (!this._shouldProcessRelation(relation, 'o2m')) {
@@ -62,6 +64,7 @@ export class ContentMesh {
       // Only process relations for tables that exist.
       if (!destTable || !srcTable) {
         // Warn the user if we think the relation should have been processed.
+        // eslint-disable-next-line @typescript-eslint/camelcase
         if (!collection_many.match(/^directus/) || !collection_one.match(/^directus/)) {
           log.warn('Unable to resolve Directus relation', {
             config: relation,
@@ -76,12 +79,15 @@ export class ContentMesh {
         return bag;
       }
 
+      // eslint-disable-next-line @typescript-eslint/camelcase
       log.info(`Creating O2M relation for ${destTable.name}.${field_many} -> ${srcTable.name}.${field_one}`);
 
       bag.push(
         new SimpleContentRelation({
+          // eslint-disable-next-line @typescript-eslint/camelcase
           destField: field_many,
           destTable,
+          // eslint-disable-next-line @typescript-eslint/camelcase
           srcField: field_one,
           srcTable,
           mesh: this,
@@ -190,17 +196,21 @@ export class ContentMesh {
   }
 
   private _shouldProcessRelation(
+    // eslint-disable-next-line @typescript-eslint/camelcase
     { collection_many, collection_one, junction_field }: IRelation,
     type: 'o2m' | 'm2m',
   ): boolean {
+    // eslint-disable-next-line @typescript-eslint/camelcase
     if (collection_many.match(/^directus/) && collection_one.match(/^directus/)) {
       return false;
     }
 
     switch (type) {
       case 'o2m':
+        // eslint-disable-next-line @typescript-eslint/camelcase
         return !junction_field;
       case 'm2m':
+        // eslint-disable-next-line @typescript-eslint/camelcase
         return !!junction_field;
       default:
         log.error(`Internal error, unknown relation type: ${type}`);

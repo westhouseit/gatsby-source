@@ -4,6 +4,7 @@ import { ContentNode } from '../content-node';
 
 export interface ContentCollectionConfig {
   collection: ICollectionDataSet;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   records: any[];
 }
 
@@ -35,6 +36,7 @@ export class ContentCollection {
   }
 
   private _resolvePrimaryKeyFieldName(collection: ICollectionDataSet): string {
+    // eslint-disable-next-line @typescript-eslint/camelcase
     const [pkField] = Object.values(collection.fields).filter(({ primary_key }) => primary_key);
 
     if (!pkField) {
@@ -69,6 +71,7 @@ export class ContentCollection {
   }
 
   public get fields(): IField[] {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return Object.values((this._collection as any).fields);
   }
 
@@ -76,10 +79,12 @@ export class ContentCollection {
     return Object.values(this._nodes);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public getByPrimaryKey(pk: any): ContentNode | void {
     return this._nodes[pk];
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public getByRecord(record: any): ContentNode | void {
     const pk = (record || {})[this._primaryKeyFieldName];
     return this.getByPrimaryKey(pk);

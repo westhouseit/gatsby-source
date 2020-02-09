@@ -34,6 +34,7 @@ export class GatsbyType {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async buildNodes(): Promise<any[]> {
     const formatter = this._processor.createNodeFactory(this._name);
 

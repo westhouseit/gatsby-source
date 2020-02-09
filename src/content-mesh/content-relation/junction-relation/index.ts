@@ -24,6 +24,7 @@ export class JunctionContentRelation extends ContentRelation {
 
   protected _resolveNodeRelation(node: ContentNode, tableType: 'src' | 'dest'): void | ContentNode | ContentNode[] {
     const targetField = tableType === 'src' ? this._srcField : this._destField;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const existing: any[] = node.contents[targetField] || [];
 
     // Explicit cast here because we're filtering out any
@@ -34,6 +35,7 @@ export class JunctionContentRelation extends ContentRelation {
       .filter(node => !!node) as ContentNode[];
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   protected _resolveJunctionNodes(junctionRecord: any): { src: ContentNode | void; dest: ContentNode | void } {
     return {
       src: this._srcTable.getByPrimaryKey(junctionRecord[this._destJunctionField]),

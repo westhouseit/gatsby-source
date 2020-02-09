@@ -29,6 +29,7 @@ export class GatsbyNode {
     return `${field}___NODE`;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _mixinRelations(contents: any): any {
     return Object.entries(this._node.getRelations()).reduce(
       (newContents, [field, relation]) => {
@@ -43,6 +44,7 @@ export class GatsbyNode {
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async build(): Promise<any> {
     // Ensure ID field is set to the primary key.
     const contents = {
@@ -59,6 +61,7 @@ export class GatsbyNode {
 }
 
 export class GatsbyFileNode extends GatsbyNode {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async build(): Promise<any> {
     const localNode = await super.build();
 
@@ -72,6 +75,7 @@ export class GatsbyFileNode extends GatsbyNode {
         url: localNode.data.full_url,
       });
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/camelcase
       localNode.localFile___NODE = (remoteNode as any).id;
     } catch (e) {
       log.error(`Failed to download remote file: ${localNode.data.full_url}`);

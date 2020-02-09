@@ -10,6 +10,7 @@ export class SimpleContentRelation extends ContentRelation {
 
   protected _resolveNodeRelation(node: ContentNode, tableType: 'src' | 'dest'): void | ContentNode | ContentNode[] {
     if (tableType === 'src') {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const existing: any[] = node.contents[this._srcField] || [];
 
       return existing.map(record => this._destTable.getByRecord(record)).filter(node => !!node) as ContentNode[];
