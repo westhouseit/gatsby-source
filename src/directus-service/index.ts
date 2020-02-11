@@ -17,7 +17,7 @@ export interface DirectusServiceConfig {
     token?: string;
   };
 
-  project?: string;
+  project: string;
   fileCollectionName?: string;
   targetStatuses?: string[] | void;
 
@@ -44,6 +44,14 @@ export class DirectusService {
   private _ready: Promise<void>;
 
   constructor(config: DirectusServiceConfig) {
+    if (!config.project) {
+      log.error(`Required config option missing. No 'project' provided.`, { config });
+      throw new Error('MALFORMED_CONFIGURATION');
+    } else if (typeof config.project !== 'string') {
+      log.error(`The provided 'project' config option was invalid. Only strings accepted.`, { config });
+      throw new Error('MALFORMED_CONFIGURATION');
+    }
+
     if (config.fileCollectionName) {
       this._fileCollectionName = config.fileCollectionName;
     }

@@ -9,7 +9,9 @@ export const sourceNodes = async (
   config: DirectusServiceConfig & GatsbyProcessorConfig,
 ): Promise<void> => {
   log.info(`Starting...`);
-  log.info(`Target: ${config.url}/${config.project}`);
+
+  log.info(`URL: ${config.url}`);
+  log.info(`Project: ${config.project}`);
 
   const service = new DirectusService(config);
 
