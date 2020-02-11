@@ -35,17 +35,17 @@
   },
   "homepage": "https://github.com/directus/gatsby-source#readme",
   "dependencies": {
-    "@directus/sdk-js": "^6.0.1",
+    "@directus/sdk-js": "^6.0.2",
     "colors": "^1.4.0",
     "gatsby-node-helpers": "^0.3.0",
     "gatsby-source-filesystem": "^2.1.48",
     "pluralize": "^8.0.0"
   },
   "devDependencies": {
-    "@types/node": "^13.7.0",
+    "@types/node": "^13.7.1",
     "@types/pluralize": "0.0.29",
-    "@typescript-eslint/eslint-plugin": "^2.19.0",
-    "@typescript-eslint/parser": "^2.19.1",
+    "@typescript-eslint/eslint-plugin": "^2.19.2",
+    "@typescript-eslint/parser": "^2.19.2",
     "eslint": "^6.8.0",
     "husky": "^4.2.1",
     "prettier": "^1.19.1",
