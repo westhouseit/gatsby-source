@@ -53,7 +53,10 @@ export class GatsbyProcessor {
     );
 
     return Promise.all(
-      nodes.reduce((flattened, nodes) => [...flattened, ...nodes]).map(node => this.gatsby.actions.createNode(node)),
+      nodes
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .reduce((flattened, nodes) => [...flattened, ...nodes], [] as any[])
+        .map(node => this.gatsby.actions.createNode(node)),
     );
   }
 

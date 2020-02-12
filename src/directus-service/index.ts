@@ -255,7 +255,11 @@ export class DirectusService {
 
       const { data = [] } = await this._api.getFiles();
 
-      return data.reduce((flattened, nodes) => [...flattened, ...nodes]);
+      // The SDK has 'data' typed as IFile[][], but in reality
+      // it's returned as IFile[]
+      //
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return data as any;
     } catch (e) {
       log.error('Failed to fetch files.');
       log.error(`Did you grant READ permissions?`);
