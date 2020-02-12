@@ -1,5 +1,7 @@
 # Gatsby Source Directus
 
+**:warning: This project is under heavy development, so breaking changes may occur on our road to a stable v1.0.0. Any bug report will be highly appreciated.**
+
 A [Gatsby](https://www.gatsbyjs.org/) source plugin to pull content from a [Directus CMS](https://directus.io/) backend.
 
 Inspired by the [gatsby-source-directus7](https://github.com/Jonesus/gatsby-source-directus7) plugin by [Joonas Palosuo](https://github.com/Jonesus)
