@@ -1,0 +1,52 @@
+name: CI
+
+on: [push]
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - run: npm ci
+      - run: npm run lint
+
+  test:
+    name: Test (node-${{ matrix.node-version }})
+    needs:
+      - lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 13.x]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
