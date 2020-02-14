@@ -34,6 +34,7 @@ jobs:
     needs:
       - lint
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         node-version: [10.x, 12.x, 13.x]
@@ -51,6 +52,12 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: setup environement
+        run: |
+          curl -L https://github.com/docker/compose/releases/download/1.25.4/docker-compose-`uname -s`-`uname -m` -o ./docker-compose
+          chmod +x ./docker-compose
+          ./docker-compose up -d
 
       - run: npm ci
       - run: npm run build
