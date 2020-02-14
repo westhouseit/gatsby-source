@@ -171,7 +171,7 @@ export class ContentMesh {
     const fileTable = this.getCollection('directus_files');
 
     if (!fileTable) {
-      log.error(`Couldn't resolve the internal file table using the name "directus_files"`);
+      log.warn(`Couldn't resolve the internal file table using the name "directus_files"`);
       return [];
     }
 

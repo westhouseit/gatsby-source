@@ -16,13 +16,14 @@ export const sourceNodes = async (
   const service = new DirectusService(config);
 
   try {
-    await service.init();
+    const [collections, relations, files, fileCollection] = await Promise.all([
+      service.batchGetCollections(),
+      service.batchGetRelations(),
+      service.getAllFiles(),
+      service.getFilesCollection(),
+    ]);
 
-    const collections = await service.batchGetCollections();
     const records = await service.batchGetCollectionRecords(collections);
-    const relations = await service.batchGetRelations();
-    const files = await service.getAllFiles();
-    const fileCollection = await service.getFilesCollection();
 
     const contentMesh = new ContentMesh({
       collections: [...collections, fileCollection],

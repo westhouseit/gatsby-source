@@ -52,6 +52,8 @@ export class DirectusService {
       throw new Error('MALFORMED_CONFIGURATION');
     }
 
+    log.info('Initializing Directus Service...');
+
     if (config.fileCollectionName) {
       this._fileCollectionName = config.fileCollectionName;
     }
@@ -140,14 +142,9 @@ export class DirectusService {
     return this._targetStatuses.includes(record.status);
   }
 
-  public async init(): Promise<void> {
-    log.info('Initializing Directus Service...');
-
-    await this._ready;
-  }
-
   public async getCollection(collectionId: string): Promise<ICollectionResponse> {
     try {
+      await this._ready;
       log.info(`Fetching collection info for "${collectionId}"`);
       const response = await this._api.getCollection(collectionId);
 
@@ -160,6 +157,7 @@ export class DirectusService {
 
   public async getFilesCollection(): Promise<ICollectionDataSet> {
     try {
+      await this._ready;
       log.info(`Fetching files collection using name "${this._fileCollectionName}"`);
 
       // For some reason, api.getCollection(this._fileCollectionName) is not working
@@ -188,6 +186,7 @@ export class DirectusService {
 
   public async batchGetCollections(): Promise<ICollectionDataSet[]> {
     try {
+      await this._ready;
       log.info('Fetching all collections...');
 
       // Explicit 'any' cast because ICollectionsResponse doesn't match the actual response shape (DirectusSDK bug)
@@ -209,6 +208,7 @@ export class DirectusService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async batchGetRelations(): Promise<any> {
     try {
+      await this._ready;
       log.info('Fetching all relations...');
 
       const { data: relations = [] } = await this._api.getRelations({
@@ -225,6 +225,7 @@ export class DirectusService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public async getCollectionRecords(collection: string): Promise<any[]> {
     try {
+      await this._ready;
       log.info(`Fetching records for ${collection}...`);
 
       const { data: items = [] } = (await this._api.getItems(collection, {
@@ -258,6 +259,7 @@ export class DirectusService {
 
   public async getAllFiles(): Promise<IFile[]> {
     try {
+      await this._ready;
       log.info('Fetching all files...');
 
       const { data = [] } = await this._api.getFiles({
