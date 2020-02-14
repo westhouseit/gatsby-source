@@ -12,3 +12,5 @@ categories:
     label: 'documentation'
   - title: ':arrow_up: Dependency Updates'
     label: 'dependencies'
+  - title: ':anger::exclamation: Breaking Changes'
+    label: 'breaking changes'
