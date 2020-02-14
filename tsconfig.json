@@ -2,10 +2,7 @@
   "compilerOptions": {
     "target": "es2016",
     "module": "commonjs",
-    "lib": [
-      "es2019",
-      "esnext"
-    ],
+    "lib": ["es2019", "esnext"],
     "outDir": "",
     "strict": true,
     "moduleResolution": "node",
@@ -13,10 +10,6 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },
-  "exclude": [
-    "src/**/**.test.ts"
-  ],
-  "include": [
-    "src/**/*"
-  ]
+  "exclude": ["src/**/**.test.ts"],
+  "include": ["src/**/*"]
 }
