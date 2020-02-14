@@ -449,7 +449,7 @@ npm run release [<newversion> | major | minor | patch]
 
 Push the release commit and then the release tag to the Github repository:
 ```sh
-git push && git push --tags
+git push --follow-tags
 ```
 
 Github will take care of building the project, running all the tests, and finally publishing the package to the NPM registry.
