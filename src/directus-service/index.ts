@@ -166,8 +166,10 @@ export class DirectusService {
       // at time of authorship.
 
       // Explicit 'any' cast because ICollectionsResponse doesn't match the actual response shape (DirectusSDK bug)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data: collections = [] } = (await this._api.getCollections()) as any;
+      const { data: collections = [] } = (await this._api.getCollections({
+        limit: -1,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      })) as any;
 
       const [fileCollection] = (collections as ICollectionDataSet[]).filter(
         ({ collection }) => collection === this._fileCollectionName,
@@ -189,8 +191,10 @@ export class DirectusService {
       log.info('Fetching all collections...');
 
       // Explicit 'any' cast because ICollectionsResponse doesn't match the actual response shape (DirectusSDK bug)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data: collections = [] } = (await this._api.getCollections()) as any;
+      const { data: collections = [] } = (await this._api.getCollections({
+        limit: -1,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      })) as any;
 
       // Currently we don't consider non-managed Directus tables.
       return (collections as ICollectionDataSet[]).filter(({ collection, managed }) =>
@@ -207,7 +211,9 @@ export class DirectusService {
     try {
       log.info('Fetching all relations...');
 
-      const { data: relations = [] } = await this._api.getRelations();
+      const { data: relations = [] } = await this._api.getRelations({
+        limit: -1,
+      });
 
       return relations;
     } catch (e) {
@@ -223,7 +229,7 @@ export class DirectusService {
 
       const { data: items = [] } = (await this._api.getItems(collection, {
         fields: '*.*',
-        limit: -1
+        limit: -1,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       })) as { data: any[] };
 
@@ -254,7 +260,9 @@ export class DirectusService {
     try {
       log.info('Fetching all files...');
 
-      const { data = [] } = await this._api.getFiles();
+      const { data = [] } = await this._api.getFiles({
+        limit: -1,
+      });
 
       // The SDK has 'data' typed as IFile[][], but in reality
       // it's returned as IFile[]
