@@ -223,6 +223,7 @@ export class DirectusService {
 
       const { data: items = [] } = (await this._api.getItems(collection, {
         fields: '*.*',
+        limit: -1
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       })) as { data: any[] };
 
