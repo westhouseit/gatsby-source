@@ -445,6 +445,38 @@ E.g. if we have a `products` collection in Directus that has a `reviews` field d
 
 The project is written in TypeScript. You can clone the repo and use the command `npm run dev` to start TypeScript in watch-mode. `npm run build` builds the project.
 
+#### Linting
+
+Running the linter is as simple as:
+
+```sh
+npm run lint
+```
+
+#### Testing
+
+Some simple unit tests can be run using the following command:
+
+```sh
+npm run test
+```
+
+In order to run e2e tests, we rely on [docker](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/) for setting up a Directus API.
+
+Start the docker environment:
+
+```sh
+docker-compose up -d
+```
+
+Usually wait few seconds before the docker environment is ready to accept requests and you can run e2e tests:
+
+```sh
+npm run e2e
+```
+
+Please see [docker](https://docs.docker.com/) and [docker-compose](https://docs.docker.com/compose/) documentation websites for more details.
+
 ### Release
 
 Before making a new release, be sure that the project passes linting and the tests, otherwise it won't be published to NPM.
