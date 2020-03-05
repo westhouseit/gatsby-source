@@ -443,14 +443,14 @@ E.g. if we have a `products` collection in Directus that has a `reviews` field d
 
 ### Development
 
-The project is written in TypeScript. You can clone the repo and use the command `npm run dev` to start TypeScript in watch-mode. `npm run build` builds the project.
+The project is written in TypeScript. You can clone the repo and use the command `yarn dev` to start TypeScript in watch-mode. `yarn build` builds the project.
 
 #### Linting
 
 Running the linter is as simple as:
 
 ```sh
-npm run lint
+yarn lint
 ```
 
 #### Testing
@@ -458,7 +458,7 @@ npm run lint
 Some simple unit tests can be run using the following command:
 
 ```sh
-npm run test
+yarn test
 ```
 
 In order to run e2e tests, we rely on [docker](https://docs.docker.com/install/) and [docker-compose](https://docs.docker.com/compose/) for setting up a Directus API.
@@ -472,7 +472,7 @@ docker-compose up -d
 Usually wait few seconds before the docker environment is ready to accept requests and you can run e2e tests:
 
 ```sh
-npm run e2e
+yarn e2e
 ```
 
 Please see [docker](https://docs.docker.com/) and [docker-compose](https://docs.docker.com/compose/) documentation websites for more details.
@@ -481,13 +481,13 @@ Please see [docker](https://docs.docker.com/) and [docker-compose](https://docs.
 
 Before making a new release, be sure that the project passes linting and the tests, otherwise it won't be published to the NPM package registry.
 
-First, we will bump the package version number, commit the change and finally tag the commit with our new version. This is done with the help of the NPM version command (see `npm help version`).
+First, we will bump the package version number, commit the change and finally tag the commit with our new version. This is done with the help of the `npm version` command (see `npm help version`).
 
 ```sh
-npm run release [<newversion> | major | minor | patch]
+yarn release [<newversion> | major | minor | patch]
 ```
 
-The release commit and tag should have been pushed to the Github repository. If the postrelease step failed, run the following command:
+The release commit and tag should have been pushed to the Github repository. If the `postrelease` step failed, run the following command:
 
 ```sh
 git push --follow-tags
