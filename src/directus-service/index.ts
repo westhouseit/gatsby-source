@@ -7,6 +7,7 @@ import {
   // ICollectionsResponse,
 } from '@directus/sdk-js/dist/types/schemes/response/Collection';
 import { log } from '../utils';
+import { ILoginCredentials } from '@directus/sdk-js/dist/types/schemes/auth/Login';
 
 export interface DirectusServiceConfig {
   url: string;
@@ -40,6 +41,9 @@ export class DirectusService {
   private _allowCollections: string[] | void;
   private _blockCollections: string[] | void;
 
+  private _url: string;
+  private _project: string;
+
   private _api: DirectusSDK;
   private _ready: Promise<void>;
 
@@ -69,6 +73,9 @@ export class DirectusService {
     this._allowCollections = config.allowCollections;
     this._blockCollections = config.blockCollections;
 
+    this._url = config.url;
+    this._project = config.project;
+
     this._api = this._initSDK(config);
     this._ready = this._initAuth(config);
   }
@@ -77,6 +84,7 @@ export class DirectusService {
     const config: IConfigurationOptions = {
       url,
       project,
+      mode: 'jwt',
     };
 
     if (auth.token) {
@@ -91,13 +99,13 @@ export class DirectusService {
     if (token) {
       return;
     } else if (email && password) {
-      return this._login({ email, password });
+      return this._login({ email, password, url: this._url, project: this._project });
     }
 
     log.warn('No authentication details provided. Will try using the public API...');
   }
 
-  private async _login(credentials: { email: string; password: string }): Promise<void> {
+  private async _login(credentials: ILoginCredentials): Promise<void> {
     try {
       if (!this._api.config.token) {
         const response = await this._api.login(credentials, {

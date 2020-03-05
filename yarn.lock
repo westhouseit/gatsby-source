@@ -158,10 +158,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@directus/sdk-js@6.0.2":
-  version "6.0.2"
-  resolved "https://registry.yarnpkg.com/@directus/sdk-js/-/sdk-js-6.0.2.tgz#ea348d9209f96bf0a51d1f755cc9d4284289fdc8"
-  integrity sha512-T6Kw5wk8uOpV53cTMf2XaXUyFaJIPxbPxOJGkoRMWhFX1s4kFLym88vcMjiHqx7zMpIfuiEUzFfBOM0r/ciwZw==
+"@directus/sdk-js@^6.0.5":
+  version "6.0.5"
+  resolved "https://registry.yarnpkg.com/@directus/sdk-js/-/sdk-js-6.0.5.tgz#22bb2598afe512a675228e656cbb96cd0970758c"
+  integrity sha512-BkX+OV3WeV9hB1o/rR8TdRfa3Ssulkm+FnI9TTjfLNBpF+DiNDWl4uGGKgEJ/fA86yzFDj8Cp9t4D4tATLVMuw==
   dependencies:
     axios "0.19.0"
     base-64 "0.1.0"
