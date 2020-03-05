@@ -13,7 +13,8 @@
     "dev": "tsc --watch",
     "lint": "eslint . --ext .ts && prettier --check \"**/*.{js,ts,json,md,yml,yaml}\"",
     "format": "prettier --write \"**/*.{js,ts,json,md,yml,yaml}\"",
-    "release": "npm version -m \":rocket: Release %s\""
+    "release": "npm version -m \":rocket: Release %s\"",
+    "postrelease": "git push --follow-tags"
   },
   "repository": {
     "type": "git",

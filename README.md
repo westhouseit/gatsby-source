@@ -479,7 +479,7 @@ Please see [docker](https://docs.docker.com/) and [docker-compose](https://docs.
 
 ### Release
 
-Before making a new release, be sure that the project passes linting and the tests, otherwise it won't be published to NPM.
+Before making a new release, be sure that the project passes linting and the tests, otherwise it won't be published to the NPM package registry.
 
 First, we will bump the package version number, commit the change and finally tag the commit with our new version. This is done with the help of the NPM version command (see `npm help version`).
 
@@ -487,7 +487,7 @@ First, we will bump the package version number, commit the change and finally ta
 npm run release [<newversion> | major | minor | patch]
 ```
 
-Push the release commit and then the release tag to the Github repository:
+The release commit and tag should have been pushed to the Github repository. If the postrelease step failed, run the following command:
 
 ```sh
 git push --follow-tags
