@@ -7,7 +7,8 @@
   },
   "main": "gatsby-node.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest tests",
+    "e2e": "jest e2e",
     "build": "tsc",
     "dev": "tsc --watch",
     "lint": "eslint . --ext .ts && prettier --check \"**/*.{js,ts,json,md,yml,yaml}\"",
