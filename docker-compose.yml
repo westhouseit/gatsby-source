@@ -9,7 +9,7 @@ services:
       MYSQL_USER: directus
       MYSQL_PASSWORD: directus
     volumes:
-      - ./tests-data/db:/docker-entrypoint-initdb.d
+      - ./e2e-data/db:/docker-entrypoint-initdb.d
 
   directus:
     image: directus/directus:v8-apache
@@ -26,6 +26,6 @@ services:
     ports:
       - 8080:80
     volumes:
-      - ./tests-data/uploads:/var/directus/public/uploads
+      - ./e2e-data/uploads:/var/directus/public/uploads
     links:
       - mariadb:mariadb
