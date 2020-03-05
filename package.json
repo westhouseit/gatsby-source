@@ -52,6 +52,7 @@
     "eslint": "^6.8.0",
     "husky": "^4.2.3",
     "jest": "^25.1.0",
+    "lint-staged": "^10.0.8",
     "prettier": "^1.19.1",
     "request": "^2.88.2",
     "ts-jest": "^25.2.1",
@@ -59,7 +60,10 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint"
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "**/*.{js,ts,json,md,yml,yaml}": "prettier --write"
   }
 }
