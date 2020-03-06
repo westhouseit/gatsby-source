@@ -1,4 +1,4 @@
-import { testDirectusService } from './server.test';
+import TestServer from './test-server';
 import { ContentMesh } from '../src/content-mesh';
 import { ContentCollection } from '../src/content-mesh/content-collection';
 import { ICollectionDataSet } from '@directus/sdk-js/dist/types/schemes/response/Collection';
@@ -18,6 +18,8 @@ const getBasicMesh = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   records: any[];
 }> => {
+  const testDirectusService = TestServer.newDirectusService();
+
   const { data: collection } = await testDirectusService.getCollection(collectionName);
   const records = await testDirectusService.getCollectionRecords(collectionName);
 
@@ -35,7 +37,7 @@ const getBasicMesh = async (
 };
 
 describe('E2E', () => {
-  it('Should initialize the ContentCollection for a simple collection correctly', async done => {
+  it('Should initialize the ContentCollection for a simple collection correctly', async () => {
     const collectionName = 'posts';
 
     const { collection, mesh } = await getBasicMesh(collectionName);
@@ -53,11 +55,9 @@ describe('E2E', () => {
 
     expect(col.fields.length).toBe(Object.keys(fields).length);
     col.fields.forEach(field => expect(fields[field.field]).toEqual(field));
-
-    done();
   });
 
-  it('Should create the ContentNodes for a simple collection correctly', async done => {
+  it('Should create the ContentNodes for a simple collection correctly', async () => {
     const collectionName = 'posts';
 
     const { records, mesh } = await getBasicMesh(collectionName);
@@ -78,7 +78,5 @@ describe('E2E', () => {
       expect(recordIds).toContain(node.primaryKey);
       expect(node.getRelations()).toEqual({});
     });
-
-    done();
   });
 });
