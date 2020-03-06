@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2016",
     "module": "commonjs",
-    "lib": ["es2019", "esnext"],
+    "lib": ["es2015", "es2019", "esnext"],
     "outDir": "",
     "strict": true,
     "moduleResolution": "node",
