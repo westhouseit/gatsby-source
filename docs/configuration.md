@@ -30,8 +30,8 @@ This strategy is **not** recommended. If no `auth.token` or `auth.(email|passwor
 
 Find details regarding the `options` object schema below. Required fields are denoted with an `*`.
 
-- [`url*`](#url)
-- [`project*`](#project)
+- [`url*`](#url-required)
+- [`project*`](#project-required)
 - [`auth.token`](#authtoken)
 - [`auth.email`](#authemail)
 - [`auth.password`](#authpassword)
