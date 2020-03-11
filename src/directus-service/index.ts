@@ -25,6 +25,9 @@ export interface DirectusServiceConfig {
   allowCollections?: string[] | void;
   blockCollections?: string[] | void;
 
+  itemLimit?: number;
+  fileLimit?: number;
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   customRecordFilter?: (record: any, collection: string) => boolean;
 }
@@ -41,6 +44,9 @@ export class DirectusService {
   private _allowCollections: string[] | void;
   private _blockCollections: string[] | void;
 
+  private _itemLimit: number = -1;
+  private _fileLimit: number = -1;
+  
   private _url: string;
   private _project: string;
 
@@ -72,6 +78,13 @@ export class DirectusService {
 
     this._allowCollections = config.allowCollections;
     this._blockCollections = config.blockCollections;
+    
+    if (config.itemLimit) {
+      this._itemLimit = config.itemLimit;
+    }
+    if (config.fileLimit) {
+      this._fileLimit = config.fileLimit;
+    }
 
     this._url = config.url;
     this._project = config.project;
@@ -234,11 +247,12 @@ export class DirectusService {
   public async getCollectionRecords(collection: string): Promise<any[]> {
     try {
       await this._ready;
-      log.info(`Fetching records for ${collection}...`);
+      let limitStr = this._itemLimit ? ` (max ${this._itemLimit})` : ``;
+      log.info(`Fetching records for ${collection}...$limitStr`);
 
       const { data: items = [] } = (await this._api.getItems(collection, {
         fields: '*.*',
-        limit: -1,
+        limit: this._itemLimit,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       })) as { data: any[] };
 
@@ -268,10 +282,11 @@ export class DirectusService {
   public async getAllFiles(): Promise<IFile[]> {
     try {
       await this._ready;
-      log.info('Fetching all files...');
+      let limitStr = this._fileLimit ? ` (max ${this._fileLimit})` : ``;
+      log.info(`Fetching all files...$limitStr`);
 
       const { data = [] } = await this._api.getFiles({
-        limit: -1,
+        limit: this._fileLimit,
       });
 
       // The SDK has 'data' typed as IFile[][], but in reality
