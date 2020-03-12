@@ -79,7 +79,7 @@ export class DirectusService {
     this._allowCollections = config.allowCollections;
     this._blockCollections = config.blockCollections;
     
-    if (config.itemLimit) {
+    if (typeof config.itemLimit === 'number') {
       this._itemLimit = config.itemLimit;
     }
     if (config.fileLimit) {
