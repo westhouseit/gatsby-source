@@ -82,7 +82,7 @@ export class DirectusService {
     if (typeof config.itemLimit === 'number') {
       this._itemLimit = config.itemLimit;
     }
-    if (config.fileLimit) {
+    if (typeof config.fileLimit === 'number') {
       this._fileLimit = config.fileLimit;
     }
 
